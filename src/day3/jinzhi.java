@@ -1,4 +1,4 @@
-package zhushi;
+package day3;
 
 public class jinzhi {
     public static void main(String[] args) {

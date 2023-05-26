@@ -1,4 +1,4 @@
-package zhushi;
+package day3;
 
 public class zhushi2 {
     /**
