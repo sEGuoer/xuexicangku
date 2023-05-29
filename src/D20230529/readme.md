@@ -6,7 +6,7 @@
 
 ### 第一个 java 程序
 ```public class test{
-    public static void main(String[] args) {
+    public static void main(String[] args) {test
         short s=5;
         //s=s-3;
         char c='d';
@@ -20,4 +20,7 @@
 ab不同情况下运算对应的结果<p>
 ![img_1.png](img_1.png)
 
+## 位运算符
+a|b<p>
 
+![img_3.png](img_3.png)
