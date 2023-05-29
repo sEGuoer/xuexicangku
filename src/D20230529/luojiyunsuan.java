@@ -31,5 +31,17 @@ public class luojiyunsuan {
         System.out.println("a2="+((a1|a2)+(a1&a2)-a1));
         System.out.println("a1="+((a1|a2)+(a1&a2)-a2));
         System.out.println("a1="+((a2^a1)^a2));
+        /*
+        三种方法用a1,a2得到对方
+
+        第一：设置一个新变量，使a1+a2=a，从而得到a1,a2的值
+
+        第二：a1=a1+a2
+        a2=a1-a2
+        原来的a1=a2,原来的a2=a1-a2
+
+        第三就是用异反
+        先求两个数的异反，求出来的异反和其中一个数的异反就是另一个数.
+         */
     }
 }
