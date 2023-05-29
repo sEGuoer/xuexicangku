@@ -1,4 +1,4 @@
-package day3;
+package D20230526;
 
 public class jinzhi {
     public static void main(String[] args) {

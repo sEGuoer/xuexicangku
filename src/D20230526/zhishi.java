@@ -1,4 +1,4 @@
-package day3;
+package D20230526;
 //first
 
 
@@ -6,8 +6,6 @@ package day3;
 123
  */
 
-
-import java.sql.SQLOutput;
 
 /**
  *123
