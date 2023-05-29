@@ -1,5 +1,7 @@
 package D20230529;
 
+import java.util.Scanner;
+
 public class jisuan {
     public static void main(String[] args) {
         int a=12;
@@ -53,7 +55,20 @@ public class jisuan {
         //  System.out.println("i = " + i);  i=18;
         // System.out.println("i2 = " + i2);  i=18;
 
-
-
+        int num=157;
+        int i3 = num / 100;
+        int i4 = num % 100 / 10;
+        int i5 = num % 10;
+        System.out.println("百位数为"+ i3);
+        System.out.println("十位数为"+ i4);
+        System.out.println("个位数为"+ i5);
+        Scanner sc = new Scanner(System.in);
+        int mum= sc.nextInt();
+        int s3 = mum / 100;
+        int s4 = mum % 100 / 10;
+        int s5 = mum % 10;
+        System.out.println("百位数为"+ s3);
+        System.out.println("十位数为"+ s4);
+        System.out.println("个位数为"+ s5);
     }
 }
