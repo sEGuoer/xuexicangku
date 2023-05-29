@@ -15,6 +15,8 @@ float f=3.14F;
 double result=c+i+f;
 }
 }`
-##贴图相应使用
+## 贴图相应使用
+图片示例
 ![img.png](img.png)
+
 
