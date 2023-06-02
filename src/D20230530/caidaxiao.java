@@ -22,14 +22,14 @@ public class caidaxiao {
                 break;
             } else if (a < math) {
                 System.out.println("~你猜的数有点大哦~");
-                System.out.println("请输入你猜的一个100以内的正整数");
+                System.out.println("还有"+(7-s)+"次机会");
             } else if (a > math) {
                 System.out.println("~你猜的数小了~");
-                System.out.println("请输入你猜的一个100以内的正整数");
+                System.out.println("还有"+(7-s)+"次机会");
             }
         }
         while (s == 8) {
-            System.out.println("游戏失败,本次的数为"+a);
+            System.out.println("游戏失败,本次所猜的数为"+a);
             s++;
         }
     }
