@@ -22,10 +22,6 @@ public class xuehao1 {
         dog[] ds1=new dog[]{dog1,dog2};
         student.count=ds1;
         student.show();
-        for (int i=0;i<ds1.length;i++){
-            ds1[i].dogshow();
-        }
-        System.out.println();
 
         Student student1 = new Student();
         student1.xuehao = "201921149058";
@@ -40,9 +36,5 @@ public class xuehao1 {
         dog[] ds2=new dog[]{dog3};
         student1.count=ds2;
         student1.show();
-        for (int i=0;i<ds2.length;i++){
-            ds2[i].dogshow();
-        }
-
     }
 }
