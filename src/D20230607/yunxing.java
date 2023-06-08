@@ -7,10 +7,11 @@ public class yunxing {
         MyArrays.min(x);
         MyArrays.sum(x);
         MyArrays.avarage(x);
-        MyArrays.bianlishuzu(x);
-        MyArrays.shuzufanzhuan(x);
-        MyArrays.fuzhishuzu(x,x);
-        MyArrays.shuzupaixu(x);
-        MyArrays.chazhao(x);
+        MyArrays.bianLiShuZu(x);
+        MyArrays.shuZuFanZhuan(x);
+        MyArrays.fuZhiShuZu(x,x);
+        MyArrays.shuZuPaiXu(x);
+        MyArrays.sort(x);
+
     }
 }
