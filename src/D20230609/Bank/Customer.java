@@ -18,16 +18,19 @@ public class Customer {
         return lastName;
     }
 
-    public Account setAccount(int id, int balance, double AnnualInterestRate) {
+    public void setAccount(int id, int balance, double AnnualInterestRate) {
         Account a = new Account();
         a.setID(id);
         a.setBalance(balance);
         a.setAnnualInterestRate(AnnualInterestRate);
         this.account = a;
+    }
+
+    public Account getAccount() {
         return account;
     }
 
-    public void getAccount() {
+    public void showAccount() {
         System.out.println("Customer [" + firstName + lastName + "] 有一个账户: " + account.getID() + ", annualInterestRate=" + account.getAnnualInterestRate() + "%, balance=" + account.getBalance());
     }
 }
