@@ -7,7 +7,7 @@ public class Test {
 //        Method.huitu();
 //        Method.huitumianji();
 //        Method.huitubingjisuan(2,3);
-        MyArrays.inputLanguage("as","1","a","asb");
+        MyArrays.inputLanguage("as", "1", "a", "asb");
         MyArrays.inputLanguage();
     }
 }

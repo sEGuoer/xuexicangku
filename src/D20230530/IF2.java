@@ -1,4 +1,5 @@
 package D20230530;
+
 import javax.swing.plaf.metal.MetalIconFactory;
 import java.util.Scanner;
 
@@ -14,16 +15,16 @@ public class IF2 {
     }
 
     public static void f1() {
-        int num1=15;
-        while (num1>10){
+        int num1 = 15;
+        while (num1 > 10) {
             System.out.println("123");
             num1--;
         }
-        int num2=15;
+        int num2 = 15;
         do {
             System.out.println("321");
             num2--;
-        }while (num2>10);
+        } while (num2 > 10);
     }
 }
 

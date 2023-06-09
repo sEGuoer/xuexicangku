@@ -8,18 +8,21 @@ public class ST {
         System.out.println(setstudent2);
     }
 }
-class stundet{
+
+class stundet {
     String id;
     String name;
     int age;
     static stundet stundet;
-    private stundet(){
+
+    private stundet() {
     }
 
     public static stundet setstudent() {
-        if(stundet==null) {
-            stundet= new stundet();}
-        else{}
+        if (stundet == null) {
+            stundet = new stundet();
+        } else {
+        }
         return stundet;
     }
 /*

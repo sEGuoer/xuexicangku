@@ -6,12 +6,14 @@ public class chengfabiao {
     }
 
     public static void f1() {
-        int i=1;
-        int n=1;
-        while (i<10){while (i>=n){
-            System.out.println(n+"*"+i+"="+(i*n));
-            n++;}
-            n=1;
+        int i = 1;
+        int n = 1;
+        while (i < 10) {
+            while (i >= n) {
+                System.out.println(n + "*" + i + "=" + (i * n));
+                n++;
+            }
+            n = 1;
             i++;
             System.out.println();
         }

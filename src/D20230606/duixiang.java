@@ -5,7 +5,7 @@ public class duixiang {
     int size;
 
     public static void main(String[] args) {
-        int size=0;
+        int size = 0;
         System.out.println(size);
     }
 }

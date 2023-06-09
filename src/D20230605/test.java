@@ -27,22 +27,22 @@ public class test {
             System.out.println("第"+(j+1)+"位学生的成绩为"+dengji);
         }
         */
-        int[] asd = {5,4,6,8,9,0,1,2,7,3};
-        double scout=0;
-        int max=0;
-        int min=0;
-        for (int i=0;i<asd.length;i++){
-            System.out.println("分数为"+asd[i]);
-            scout=scout+asd[i];
+        int[] asd = {5, 4, 6, 8, 9, 0, 1, 2, 7, 3};
+        double scout = 0;
+        int max = 0;
+        int min = 0;
+        for (int i = 0; i < asd.length; i++) {
+            System.out.println("分数为" + asd[i]);
+            scout = scout + asd[i];
 
-            if (max<asd[i]){
-                max=asd[i];
+            if (max < asd[i]) {
+                max = asd[i];
             }
 
-            if (min>asd[i]){
-                min=asd[i];
+            if (min > asd[i]) {
+                min = asd[i];
             }
         }
-        System.out.println("平均分为"+((scout-max-min)/((asd.length)-2)));
+        System.out.println("平均分为" + ((scout - max - min) / ((asd.length) - 2)));
     }
 }
