@@ -11,7 +11,7 @@ public class JavaTest {
         String dk = jdk.substring(1);
         System.out.println(dk);*/
 
-        String howMuch = "298fjdsklzfd23";
+        String howMuch = "298fjdsklzfASDJKLKASDd23";
         char[] chars = howMuch.toCharArray();
         int daXie = 0;
         int xiaoXie = 0;
@@ -29,6 +29,30 @@ public class JavaTest {
         //System.out.println("大写字母有" + daXie);
         System.out.println("数字有" + shuZi);
         System.out.println("字母有" + xiaoXie );
+
+        for (int i = 97 ; i < 97+26 ; i ++){
+            int num = 0 ;
+            for(int j = 97 ; j < 97 + chars.length ; j ++){
+                int charj = (int)chars[j-97];
+                if (charj == i){
+                    num++;
+                }
+            }
+            if (num > 0){System.out.println((char)i+":"+num);}
+        }
+        for (int i = 65 ; i < 65+26 ; i ++){
+            int num = 0 ;
+            for(int j = 65 ; j < 65 + chars.length ; j ++){
+                int charj = (int)chars[j-65];
+                if (charj == i){
+                    num++;
+                }
+            }
+            if (num > 0){System.out.println((char)i+":"+num);}
+        }
+//        int j = (int)'a';
+//        System.out.println(j);
+
     }
 
 
