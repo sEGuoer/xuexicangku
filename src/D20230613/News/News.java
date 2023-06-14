@@ -16,7 +16,7 @@ public class News {
         information2.setTitle("中国多地遭雾霾笼罩空气质量再成热议话题2");
         information3.setTitle("中国多地遭雾霾笼罩空气质量再成热议话题3");
         information4.setTitle("中国多地遭雾霾笼罩空气质量再成热议话题3");
-        List list = new ArrayList<Information>();
+        List<String> list = new ArrayList<>();
         list.add(information1.getTitle());
         list.add(information2.getTitle());
         list.add(information3.getTitle());
