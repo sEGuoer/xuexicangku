@@ -13,16 +13,17 @@ public class Zip {
         extractZip("C:/Users/Administrator/Desktop/答辩记录表-数学1912赵晨懿.doc");
         //extractaZip("C:/Users/Administrator/Desktop/xuexicangku/src/D20230620/D20230620.zip");
     }
-    public static String extractZip(String filePath) throws Exception{
+
+    public static String extractZip(String filePath) throws Exception {
         File file = new File(filePath);
 
         System.out.println(file.getName());
-        String outputFileName = "C:/Users/Administrator/Desktop/答辩记录表-数学1912赵晨懿.doc"+file.getName()+".zip";
+        String outputFileName = "C:/Users/Administrator/Desktop/答辩记录表-数学1912赵晨懿.doc" + file.getName() + ".zip";
         ArrayList<File> filelist = new ArrayList<>();
 
-        if (file.isDirectory()){
+        if (file.isDirectory()) {
             filelist.addAll(Arrays.asList(file.listFiles()));
-        }else {
+        } else {
             filelist.add(file);
         }
         FileInputStream fileInputStream = null;
@@ -50,7 +51,8 @@ public class Zip {
 
         return outputFileName;
     }
-    public static String extractaZip(String filePath) throws Exception{
+
+    public static String extractaZip(String filePath) throws Exception {
         FileInputStream fileInputStream = new FileInputStream(filePath);
         CheckedInputStream checkedInputStream = new CheckedInputStream(fileInputStream, new Adler32());
         ZipInputStream zipInputStream = new ZipInputStream(checkedInputStream);
