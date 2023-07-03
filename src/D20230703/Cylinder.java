@@ -16,7 +16,7 @@ public class Cylinder extends Circle {
     }
 
     public double findVolume() {
-        return findArea() * getLength();
+        return super.findArea() * getLength();
     }
     @Override
     public double findArea() {
