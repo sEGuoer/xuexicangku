@@ -7,10 +7,11 @@ import java.util.TimerTask;
 public class TimerUse {
     static TimerTask task = new TimerTask() {
         private int i = 1;
+
         @Override
 
         public void run() {
-                System.out.println(new Date());
+            System.out.println(new Date());
 
         }
     };
@@ -26,7 +27,7 @@ public class TimerUse {
     public static void main(String[] args) {
 
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(getTask(),4000,2000);
+        timer.scheduleAtFixedRate(getTask(), 4000, 2000);
         System.out.println();
     }
 }

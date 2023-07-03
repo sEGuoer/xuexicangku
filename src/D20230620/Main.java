@@ -1,12 +1,14 @@
 package D20230620;
 
+import D20230613.Itelegent;
+import D20230613.Son;
 import com.google.gson.Gson;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public class Main implements Itelegent {
     public static void main(String[] args) throws IOException {
         Player player1 = new Player(1, "name1");
         Player player2 = new Player(2, "name2");
@@ -39,5 +41,10 @@ public class Main {
         inputStream.read(input);
         String s1 = new String(input);
         System.out.println(s1);
+    }
+
+    @Override
+    public List<Son> getnumber() {
+        return null;
     }
 }

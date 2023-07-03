@@ -7,17 +7,17 @@ public class ThreadDeadLock {
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                synchronized (lock1){
+                synchronized (lock1) {
                     System.out.println("线程1 获得锁1");
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     System.out.println("线程1 等待锁2");
-                        synchronized (lock2){
-                            System.out.println("线程1 获得锁2");
-                        }
+                    synchronized (lock2) {
+                        System.out.println("线程1 获得锁2");
+                    }
                 }
             }
         });
@@ -25,17 +25,17 @@ public class ThreadDeadLock {
         Thread t2 = new Thread(new Runnable() {
             @Override
             public void run() {
-                synchronized (lock2){
+                synchronized (lock2) {
                     System.out.println("线程2 获得锁2");
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     System.out.println("线程2 等待锁1");
-                        synchronized (lock1){
-                            System.out.println("线程2 获得锁1");
-                        }
+                    synchronized (lock1) {
+                        System.out.println("线程2 获得锁1");
+                    }
                 }
             }
         });
