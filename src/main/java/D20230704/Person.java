@@ -1,9 +1,7 @@
 package D20230704;
 
-import lombok.*;
-
 public class Person {
-    private static Person person = new Person();
+    private static Person person;
     private String name;
     private int age;
     private String content;
@@ -11,10 +9,10 @@ public class Person {
     private Person() {
     }
 
-    public static Person setPerson(String name, int age, String content) {
-        person.age = age;
-        person.name= name;
-        person.content=content;
+    public static Person getPerson(String name, int age, String content) {
+        if (person == null){
+            person = new Person();
+        }
         return person;
     }
 }
