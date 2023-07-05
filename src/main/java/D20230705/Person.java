@@ -15,7 +15,9 @@ public class Person  {
         if (person == null) {
             synchronized (i) {
                 Thread.sleep(1);
+                if (person == null){
                 person = new Person();
+                }
             }
         }
         return person;
