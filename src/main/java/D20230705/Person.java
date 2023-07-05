@@ -1,7 +1,7 @@
 package D20230705;
 
 public class Person  {
-    private static Person person;
+    private static volatile Person person;
     private String name;
     private int age;
     private String content;
