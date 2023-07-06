@@ -21,7 +21,7 @@ class URLReadingTest {
         */
         BufferedReader io = new BufferedReader(new InputStreamReader(url.openStream()));
         String inputLine;
-        while ((inputLine = io.readLine()) != null){
+        while ((inputLine = io.readLine()) != null) {
             System.out.println(inputLine);
         }
         io.close();
