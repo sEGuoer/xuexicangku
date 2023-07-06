@@ -35,6 +35,5 @@ class PersonTest {
             System.out.println("3"+person3.hashCode());
 
         }).start();
-
     }
 }
