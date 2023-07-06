@@ -10,9 +10,21 @@ import java.io.IOException;
 
 public class URLConnectionReader {
     public static void main(String[] args) throws IOException {
-        Document doc = Jsoup.connect( "http://www.baidu.com/").get();
+        Document doc = Jsoup.connect( "https://so.gushiwen.cn/gushi/shijing.aspx").get();
 
-        Element links = doc.selectFirst("a#s-top-loginbtn");
-        System.out.println(links.html());
+        Elements links = doc.select("div.main3 div.left div.sons a");
+        int i = 0;
+        for (Element e : links){
+            i++;
+            System.out.println(e.html());
+        }
+        System.out.println(i);
+       /* Elements link = doc.select("span > a");
+        int u = 0;
+        for (Element e : link){
+            u++;
+            System.out.println(e.html());
+        }
+        System.out.println(u);*/
     }
 }
