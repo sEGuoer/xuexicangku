@@ -38,6 +38,7 @@ class URLConnectionReaderTest {
             while ((inputLine = io.readLine()) != null){
                 System.out.println(inputLine);
                 io.close();
+                //
             }
         });
         System.out.println(exception.getMessage());
