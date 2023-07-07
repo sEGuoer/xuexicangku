@@ -37,10 +37,10 @@ public class SelectHouseAndThings {
         file.createNewFile();
         if (file.length() != 0) {
             InputStream inputStream = new FileInputStream(file);
-            byte[] bytes = new byte[1024];
+            byte[] bytes = new byte[16];
             inputStream.read(bytes);
             inputStream.close();
-            String s = new String(bytes);
+            String s = new String(bytes);//读取文件的字符串
 
             try (FileWriter writer = new FileWriter(file)) {
                 writer.write("");//清空原文件内容
@@ -49,24 +49,34 @@ public class SelectHouseAndThings {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+            int panduan = 0;
             for (; page < 4; page++) {
                 Document doc1 = Jsoup.connect("http://bbs.xmfish.com/thread-htm-fid-55-page-" + page + ".html").get();
                 Elements links1 = doc1.select("tr.tr3:has(a[class = f14 s4 view])");
+                if (panduan == 0){
+                    for (Element e : links1) {
+                        if(e.select("td[class = author]:has(a[title]) p a").attr("title").equals(s)){
+                            panduan = 1;//判断是否为当前时间信息，如果是就终止
+                            break;
+                        }else {
+                            System.out.println(e.select("td[class = author]:has(a[title]) p a").attr("title"));
+                            System.out.println(s);
 
-                for (Element e : links1) {
-                    if (!e.html().equals(a)) {
-                        String str = e.text();
-                        String[] data = str.split(" ");
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(data[0] + " ");
-                        sb.append(data[1]);
-                        System.out.println(sb.toString());
-                    } else if (e.html().equals(a)) {
-                        i++;
+                            if (!e.html().equals(a)) {
+                                String str = e.text();
+                                String[] data = str.split(" ");
+                                StringBuilder sb = new StringBuilder();
+                                sb.append(data[0] + " ");
+                                sb.append(data[1]);
+                                System.out.println(sb.toString());//得到想要的信息
+                            } else if (e.html().equals(a)) {
+                                i++;
+                            }
+                        }
                     }
+                }else if (panduan == 1){
+                    break;
                 }
-                //拿到想要的信息
             }
             System.out.println("过滤了" + i + "条");
 
