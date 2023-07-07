@@ -5,8 +5,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 
 public class SelectHouseAndThings {
     public static void main(String[] args) throws IOException {
@@ -18,7 +18,6 @@ public class SelectHouseAndThings {
         Document doc = Jsoup.connect("http://bbs.xmfish.com/thread-htm-fid-55-page-1.html").get();
         //拿到需要过滤掉的内容
 //        System.out.println(i);
-        Elements links1 = doc.select("tr.tr3:has(a[class = f14 s4 view])");
 //            #threadlist tr[class="tr3"] td[class="subject"] a 另一种方法
         Elements link = doc.select("tr.tr3 td.subject:has(i[class = windthread_new]) ");
         for (Element e : link) {
@@ -30,28 +29,73 @@ public class SelectHouseAndThings {
         Elements links2 = doc.select("tr.tr3:has(a[class = f14 s4 view]) td[class = author]:has(a[title]) p a");
         for (Element e : links2) {
             System.out.println(e.attr("title"));
+            firstTime = e.attr("title");
             break;
         }
         //拿到第一个时间
-        File file = new File("");
+        File file = new File(".\\src\\main\\java\\D20230707\\time.txt");
+        file.createNewFile();
+        if (file.length() != 0) {
+            InputStream inputStream = new FileInputStream(file);
+            byte[] bytes = new byte[1024];
+            inputStream.read(bytes);
+            inputStream.close();
+            String s = new String(bytes);
 
-        for (; page < 4; page++) {
-
-            Document doc1 = Jsoup.connect("http://bbs.xmfish.com/thread-htm-fid-55-page-" + page + ".html").get();
-            for (Element e : links1) {
-                if (!e.html().equals(a)) {
-                    String str = e.text();
-                    String[] data = str.split(" ");
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(data[0]+" ");
-                    sb.append(data[1]);
-                    System.out.println(sb.toString());
-                } else if (e.html().equals(a)) {
-                    i++;
-                }
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write("");//清空原文件内容
+                writer.write(firstTime);
+                writer.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            //拿到想要的信息
+
+            for (; page < 4; page++) {
+                Document doc1 = Jsoup.connect("http://bbs.xmfish.com/thread-htm-fid-55-page-" + page + ".html").get();
+                Elements links1 = doc1.select("tr.tr3:has(a[class = f14 s4 view])");
+
+                for (Element e : links1) {
+                    if (!e.html().equals(a)) {
+                        String str = e.text();
+                        String[] data = str.split(" ");
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(data[0] + " ");
+                        sb.append(data[1]);
+                        System.out.println(sb.toString());
+                    } else if (e.html().equals(a)) {
+                        i++;
+                    }
+                }
+                //拿到想要的信息
+            }
+            System.out.println("过滤了" + i + "条");
+
+        } else {
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write("");//清空原文件内容
+                writer.write(firstTime);
+                writer.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            for (; page < 4; page++) {
+                Document doc1 = Jsoup.connect("http://bbs.xmfish.com/thread-htm-fid-55-page-" + page + ".html").get();
+                Elements links1 = doc1.select("tr.tr3:has(a[class = f14 s4 view])");
+                for (Element e : links1) {
+                    if (!e.html().equals(a)) {
+                        String str = e.text();
+                        String[] data = str.split(" ");
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(data[0] + " ");
+                        sb.append(data[1]);
+                        System.out.println(sb.toString());
+                    } else if (e.html().equals(a)) {
+                        i++;
+                    }
+                }
+                //拿到想要的信息
+            }
+            System.out.println("过滤了" + i + "条");
         }
-        System.out.println("过滤了" + i + "条");
     }
 }
