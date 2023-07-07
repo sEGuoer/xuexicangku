@@ -24,6 +24,7 @@ public class SelectHouseAndThings {
         for (Element e : links1) {
             if (!e.html().equals(a)) {
                 System.out.println(e.text());
+                System.out.println("——————————————————————");
             } else if (e.html().equals(a)) {
                 i++;
             }
