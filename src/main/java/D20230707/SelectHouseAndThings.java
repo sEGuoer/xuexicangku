@@ -62,7 +62,7 @@ public class SelectHouseAndThings {
                 e.printStackTrace();
             }
             int panduan = 0;
-            for (; page < 4; page++) {
+            for (; ; page++) {
                 Document doc1 = Jsoup.connect("http://bbs.xmfish.com/thread-htm-fid-55-page-" + page + ".html").get();
                 Elements links1 = doc1.select("tr.tr3:has(a[class = f14 s4 view])");
                 if (panduan == 0){
@@ -71,8 +71,8 @@ public class SelectHouseAndThings {
                             panduan = 1;//判断是否为当前时间信息，如果是就终止
                             break;
                         }else {
-                            System.out.println(e.select("td[class = author]:has(a[title]) p a").attr("title"));
-                            System.out.println(s);
+                           /* System.out.println(e.select("td[class = author]:has(a[title]) p a").attr("title"));
+                            System.out.println(s);*/
 
                             if (!e.html().equals(a)) {
                                 String str = e.text();
@@ -147,7 +147,7 @@ public class SelectHouseAndThings {
             // who you are
             message.setFrom(new InternetAddress(System.getenv("qqmail")));
             // send to ...
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(System.getenv("qqmail")));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("709074535@qq.com"));
 
             message.setSubject("Mail Subject");
 
