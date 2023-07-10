@@ -1,5 +1,10 @@
 package D20230707;
 
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -7,9 +12,14 @@ import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SelectHouseAndThings {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, MessagingException {
         int page = 1;
         int i = 0;
         String a = null;
@@ -35,6 +45,8 @@ public class SelectHouseAndThings {
         //拿到第一个时间
         File file = new File(".\\src\\main\\java\\D20230707\\time.txt");
         file.createNewFile();
+        Pattern p = Pattern.compile("\\闲\\置\\转\\让");
+        List<String> sentEmail = new ArrayList<>();
         if (file.length() != 0) {
             InputStream inputStream = new FileInputStream(file);
             byte[] bytes = new byte[16];
@@ -69,6 +81,10 @@ public class SelectHouseAndThings {
                                 sb.append(data[0] + " ");
                                 sb.append(data[1]);
                                 System.out.println(sb.toString());//得到想要的信息
+                                Matcher m = p.matcher(sb.toString());
+                                while (m.find()){
+                                    sentEmail.add(sb.toString()+"<br>"+"http://bbs.xmfish.com/"+e.select("td[class = subject] a[class=\"subject_t f14\"]").attr("href")+"<br>");
+                                }
                             } else if (e.html().equals(a)) {
                                 i++;
                             }
@@ -99,6 +115,10 @@ public class SelectHouseAndThings {
                         sb.append(data[0] + " ");
                         sb.append(data[1]);
                         System.out.println(sb.toString());
+                        Matcher m = p.matcher(sb.toString());
+                        while (m.find()){
+                            sentEmail.add(sb.toString()+"<br>"+"http://bbs.xmfish.com/"+e.select("td[class = subject] a[class=\"subject_t f14\"]").attr("href")+"<br>");
+                        }
                     } else if (e.html().equals(a)) {
                         i++;
                     }
@@ -106,6 +126,44 @@ public class SelectHouseAndThings {
                 //拿到想要的信息
             }
             System.out.println("过滤了" + i + "条");
+        }
+        String emailMessage = sentEmail.toString();
+        if (sentEmail.isEmpty()){
+        }else {
+            Properties prop = new Properties();
+            prop.put("mail.smtp.auth", true);
+            prop.put("mail.smtp.starttls.enable", "true");
+            prop.put("mail.smtp.host", "smtp.qq.com");
+            prop.put("mail.smtp.port", "587");
+
+            Session session = Session.getInstance(prop, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(System.getenv("qqmail"), System.getenv("password"));
+                }
+            });
+
+            Message message = new MimeMessage(session);
+            // who you are
+            message.setFrom(new InternetAddress(System.getenv("qqmail")));
+            // send to ...
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(System.getenv("qqmail")));
+
+            message.setSubject("Mail Subject");
+
+            String msg = emailMessage;
+
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setContent(msg, "text/html; charset=utf-8");
+
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mimeBodyPart);
+
+            message.setContent(multipart);
+
+            Transport.send(message);
+
+            System.out.println("Sent message successfully....");
         }
     }
 }

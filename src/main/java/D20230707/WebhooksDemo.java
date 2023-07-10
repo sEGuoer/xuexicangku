@@ -9,7 +9,7 @@ import java.io.IOException;
 import static com.slack.api.webhook.WebhookPayloads.payload;
 public class WebhooksDemo {
     private static final Slack SLACK = Slack.getInstance();
-    private static final String WEBHOOK_URL = "https://hooks.slack.com/services/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";
+    private static final String WEBHOOK_URL = System.getenv("WebhookURL");
 
     public static void main(String[] args) throws IOException {
         WebhooksDemo.simpleText();/*
