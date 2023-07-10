@@ -65,12 +65,12 @@ public class SelectHouseAndThings {
             for (; ; page++) {
                 Document doc1 = Jsoup.connect("http://bbs.xmfish.com/thread-htm-fid-55-page-" + page + ".html").get();
                 Elements links1 = doc1.select("tr.tr3:has(a[class = f14 s4 view])");
-                if (panduan == 0){
+                if (panduan == 0) {
                     for (Element e : links1) {
-                        if(e.select("td[class = author]:has(a[title]) p a").attr("title").equals(s)){
+                        if (e.select("td[class = author]:has(a[title]) p a").attr("title").equals(s)) {
                             panduan = 1;//判断是否为当前时间信息，如果是就终止
                             break;
-                        }else {
+                        } else {
                            /* System.out.println(e.select("td[class = author]:has(a[title]) p a").attr("title"));
                             System.out.println(s);*/
 
@@ -82,15 +82,15 @@ public class SelectHouseAndThings {
                                 sb.append(data[1]);
                                 System.out.println(sb.toString());//得到想要的信息
                                 Matcher m = p.matcher(sb.toString());
-                                while (m.find()){
-                                    sentEmail.add(sb.toString()+"<br>"+"http://bbs.xmfish.com/"+e.select("td[class = subject] a[class=\"subject_t f14\"]").attr("href")+"<br>");
+                                while (m.find()) {
+                                    sentEmail.add(sb.toString() + "<br>" + "http://bbs.xmfish.com/" + e.select("td[class = subject] a[class=\"subject_t f14\"]").attr("href") + "<br>");
                                 }
                             } else if (e.html().equals(a)) {
                                 i++;
                             }
                         }
                     }
-                }else if (panduan == 1){
+                } else if (panduan == 1) {
                     break;
                 }
             }
@@ -116,8 +116,8 @@ public class SelectHouseAndThings {
                         sb.append(data[1]);
                         System.out.println(sb.toString());
                         Matcher m = p.matcher(sb.toString());
-                        while (m.find()){
-                            sentEmail.add(sb.toString()+"<br>"+"http://bbs.xmfish.com/"+e.select("td[class = subject] a[class=\"subject_t f14\"]").attr("href")+"<br>");
+                        while (m.find()) {
+                            sentEmail.add(sb.toString() + "<br>" + "http://bbs.xmfish.com/" + e.select("td[class = subject] a[class=\"subject_t f14\"]").attr("href") + "<br>");
                         }
                     } else if (e.html().equals(a)) {
                         i++;
@@ -128,8 +128,8 @@ public class SelectHouseAndThings {
             System.out.println("过滤了" + i + "条");
         }
         String emailMessage = sentEmail.toString();
-        if (sentEmail.isEmpty()){
-        }else {
+        if (sentEmail.isEmpty()) {
+        } else {
             Properties prop = new Properties();
             prop.put("mail.smtp.auth", true);
             prop.put("mail.smtp.starttls.enable", "true");
