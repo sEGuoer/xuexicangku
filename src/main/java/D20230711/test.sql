@@ -129,12 +129,12 @@ where id <= 5;
 
 select *
 from emp
-where job is null ;
+where job is null;
 -- 4. 查询 有职位 的员工信息
 
 select *
 from emp
-where job is not null ;
+where job is not null;
 -- 5. 查询 密码不等于 '123456' 的员工信息
 
 select *
@@ -152,19 +152,23 @@ where entry_date between '2000-01-01' and '2010-01-01';
 
 select entry_date
 from emp
-where entry_date >= '2000-01-01' and entry_date <= '2010-01-01';
+where entry_date >= '2000-01-01'
+  and entry_date <= '2010-01-01';
 
 
 -- 7. 查询 入职时间 在 '2000-01-01' (包含) 到 '2010-01-01'(包含) 之间 且 性别为女 的员工信息
 
 select *
 from emp
-where entry_date between '2000-01-01' and '2010-01-01' and gender = 2;
+where entry_date between '2000-01-01' and '2010-01-01'
+  and gender = 2;
 -- 8. 查询 职位是 2 (讲师), 3 (学工主管), 4 (教研主管) 的员工信息 -- orin
 
 select *
 from emp
-where job = 2 or job = 3 or job = 4;
+where job = 2
+   or job = 3
+   or job = 4;
 -- 9. 查询姓名为两个字的员工信息
 
 select *
@@ -203,7 +207,7 @@ order by entry_date desc;
 
 select id, username, entry_date
 from emp
-order by entry_date asc ,id desc ;
+order by entry_date asc, id desc;
 -- 练习 : 员工管理列表查询 , 根据最后操作时间, 进行倒序排序
 -- 条件 : name , gender , entry_date
 
@@ -225,3 +229,69 @@ from emp
 limit 0, 10;
 -- 公式
 -- limit (n-1) * num , num;
+
+--  =================== 分组查询 ======================
+-- 聚合函数
+
+-- 1. 统计该企业员工数量 -- count
+-- A. count(字段) -- id
+select count(*)
+from emp;
+
+-- null column
+
+select count(id)
+from emp;
+
+-- B. count(*)
+select count(job)
+from emp;
+
+-- 2. 统计该企业员工 ID 的平均值
+
+select avg(id) 平均值
+from emp;
+
+-- 3. 统计该企业最早入职的员工的入职日期
+
+select min(entry_date) 最早入职日期
+from emp;
+
+-- 4. 统计该企业最近入职的员工的入职日期
+
+select max(entry_date) 最近入职日期
+from emp;
+-- 5. 统计该企业员工的 ID 之和
+
+select sum(id) id之和
+from emp;
+
+-- 分组
+-- 1. 根据性别分组 , 统计男性和女性员工的数量
+
+select count(*) 数量
+from emp
+group by gender;
+-- 2. 先查询入职时间在 '2015-01-01' (包含) 以前的员工 , 并对结果根据职位分组 , 获取员工数量大于等于2的职位 -- count
+
+select job,count(*) c
+from emp
+where entry_date <= '2015-01-01'
+group by job
+having c >= 2;
+-- 男性与女性员工的人数统计 (1 : 男性员工 , 2 : 女性员工)
+
+select gender 性别,count(*) 人数
+from emp
+group by gender;
+-- 函数: if(条件表达式 , t , f)
+
+select if(gender = 1 ,'男','女') 性别 ,count(*) 人数
+from emp
+group by gender;
+-- 员工职位信息 -- count
+-- 函数: case when ... then ... when ... then ... else ... end
+-- 函数: case ... when ... then ... when ... then ... else ... end
+select (case job when 1 then '啊啊啊啊' when 2 then 'oooo' when 3 then 'yuan' when 4 then 'shen' else 'gao' end) 职位 ,count(*)
+from emp
+group by job;
