@@ -1,3 +1,45 @@
+-- 查询所有数据库
+show databases ;
+
+-- 创建数据库
+create database if not exists db1;
+
+-- DDL : 表结构
+-- 创建: 基本语法
+# create table tb_user(
+#                         id int comment 'ID, 唯一标识',
+#                         username varchar(20) comment '用户名',
+#                         name varchar(10) comment '姓名',
+#                         age int comment '年龄',
+#                         gender char(1) comment '性别'
+# ) comment '用户表';
+
+
+-- 创建: 基本语法 (约束)
+create table tb_user(
+                        id int primary key auto_increment comment 'ID, 唯一标识',
+                        username varchar(20) not null unique comment '用户名',
+                        name varchar(10) not null comment '姓名',
+                        age int comment '年龄',
+                        gender char(1) default '男' comment '性别'
+) comment '用户表';
+
+
+-- 图形化界面创建表 tb_emp
+create table tb_emp(
+                       id int primary key auto_increment comment '主键ID',
+                       username    varchar(20)                  not null comment '用户名',
+                       password    varchar(32) default '123456' null comment '密码',
+                       name        varchar(10)                  not null comment '姓名',
+                       gender      tinyint unsigned             not null comment '性别, 1 男, 2 女',
+                       image       varchar(300)                 null comment '图像url',
+                       job         tinyint unsigned             null comment '职位, 1 班主任 , 2 讲师 , 3 学工主管, 4 教研主管',
+                       entry_date   date                         null comment '入职日期',
+                       create_time datetime                     not null comment '创建时间',
+                       update_time datetime                     not null comment '修改时间',
+                       constraint tb_emp_username_uindex unique (username)
+) comment '员工表';
+
 -- DDL: 查看表结构
 -- 查看: 当前数据库下的表
 show tables;
@@ -41,3 +83,18 @@ values (null, 'ergouzi', '123', '二狗子', 2, '1.jpg', 1, '2010-01-01', now(),
 insert into tb_emp(username, name, gender)
 values ('xiaoyang', '小样', 1),
        ('pig', '二弟', 1);
+
+-- DML : 更新数据 - update
+-- 1. 将 tb_emp 表的ID为1员工 姓名name字段更新为 '张三'
+update tb_emp set name = '张三' , update_time = now() where id = 1;
+
+-- 2. 将 tb_emp 表的所有员工的入职日期更新为 '2010-01-01'
+update tb_emp set entry_date = '2010-01-01', update_time = now();
+
+
+-- DML : 删除数据 - delete
+-- 1. 删除 tb_emp 表中 ID为1的员工
+delete from tb_emp where id = 1;
+
+-- 2. 删除 tb_emp 表中的所有员工
+delete from tb_emp;
