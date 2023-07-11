@@ -35,3 +35,5 @@ create table tb_emp(
 
 describe tb_emp
 
+
+
