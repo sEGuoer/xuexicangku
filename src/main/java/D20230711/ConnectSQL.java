@@ -36,7 +36,6 @@ public class ConnectSQL {
                 int id = rs.getInt("id");
                 String title = rs.getString("title");
                 String content = rs.getString("content");
-                System.out.println(id + "\t" + title);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -140,13 +139,13 @@ public class ConnectSQL {
             }
         }
     }
-    public void update(Connection connection,Date date,String url) {
+    public void update(Connection connection,String date,String url) {
         PreparedStatement ppstmt = null;
         String updateSql = "update tb_whichweb set LastTime = ? where URL = ?";
         try {
             ppstmt = connection.prepareStatement(updateSql);
-            ppstmt.setDate(1, date);
-            ppstmt.setString(1, url);
+            ppstmt.setString(1, date);
+            ppstmt.setString(2, url);
             ppstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

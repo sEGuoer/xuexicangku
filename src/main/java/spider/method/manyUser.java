@@ -1,54 +1,23 @@
-package D20230707;
+package spider.method;
 
 import D20230711.ConnectSQL;
-import jakarta.mail.*;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeBodyPart;
-import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.internet.MimeMultipart;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.*;
-import java.nio.file.Files;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SelectHouseAndThings {
-    public static void main(String[] args) throws IOException, MessagingException, SQLException {
-        int page = 1;
-        int i = 0;
-        String a = null;
-
+public class manyUser {
+    public static List<String> xunHuan(String firstTime,int page,int i,String a) throws SQLException, IOException {
         ConnectSQL jdbcTest = new ConnectSQL();
         Connection connection = jdbcTest.getConnection();
-        Document doc = Jsoup.connect("http://bbs.xmfish.com/thread-htm-fid-55-page-1.html").get();
-
-        //拿到需要过滤掉的内容
-//        System.out.println(i);
-//            #threadlist tr[class="tr3"] td[class="subject"] a 另一种方法
-        Elements link = doc.select("tr.tr3 td.subject:has(i[class = windthread_new]) ");
-        for (Element e : link) {
-            /*System.out.println(e.html());*/
-            a = e.html();
-        }
-
-        String firstTime = "";
-        Elements links2 = doc.select("tr.tr3:has(a[class = f14 s4 view]) td[class = author]:has(a[title]) p a");
-        for (Element e : links2) {
-            System.out.println(e.attr("title"));
-            firstTime = e.attr("title")+":00";
-            break;
-        }
-        //拿到第一个时间
-
         Pattern p = Pattern.compile("\\闲\\置\\转\\让");
         List<String> sentEmail = new ArrayList<>();
         String date1 = jdbcTest.testPreparedStatement(connection,"http://bbs.xmfish.com/thread-htm-fid-55-page-1.html");
@@ -120,44 +89,6 @@ public class SelectHouseAndThings {
                 //拿到想要的信息
             }
             System.out.println("过滤了" + i + "条");
-        }
-        String emailMessage = sentEmail.toString();
-        if (sentEmail.isEmpty()) {
-        } else {
-            Properties prop = new Properties();
-            prop.put("mail.smtp.auth", true);
-            prop.put("mail.smtp.starttls.enable", "true");
-            prop.put("mail.smtp.host", "smtp.qq.com");
-            prop.put("mail.smtp.port", "587");
-
-            Session session = Session.getInstance(prop, new Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(System.getenv("qqmail"), System.getenv("password"));
-                }
-            });
-
-            Message message = new MimeMessage(session);
-            // who you are
-            message.setFrom(new InternetAddress(System.getenv("qqmail")));
-            // send to ...
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("709074535@qq.com"));
-
-            message.setSubject("Mail Subject");
-
-            String msg = emailMessage;
-
-            MimeBodyPart mimeBodyPart = new MimeBodyPart();
-            mimeBodyPart.setContent(msg, "text/html; charset=utf-8");
-
-            Multipart multipart = new MimeMultipart();
-            multipart.addBodyPart(mimeBodyPart);
-
-            message.setContent(multipart);
-
-            Transport.send(message);
-
-            System.out.println("Sent message successfully....");
-        }
+        }return sentEmail;
     }
 }
