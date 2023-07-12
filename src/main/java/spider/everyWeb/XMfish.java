@@ -17,6 +17,7 @@ import spider.method.manyUser;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -25,7 +26,7 @@ import java.util.regex.Pattern;
 
 public class XMfish implements SpiderUse {
     @Override
-    public void star() throws MessagingException, SQLException, IOException {
+    public void star() throws MessagingException, SQLException, IOException, ParseException {
         int page = 1;
         int i = 0;
         String a = null;
