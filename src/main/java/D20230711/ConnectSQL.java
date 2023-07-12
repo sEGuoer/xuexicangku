@@ -13,7 +13,7 @@ public class ConnectSQL {
         ConnectSQL jdbcTest = new ConnectSQL();
         Connection connection = jdbcTest.getConnection();
         jdbcTest.testStatement(connection);
-        jdbcTest.testPreparedStatement(connection);
+//        jdbcTest.testPreparedStatement(connection);
 //        jdbcTest.testTransactions(connection);
 //        jdbcTest.add(connection);
 //        jdbcTest.batchAdd(connection);
@@ -50,21 +50,23 @@ public class ConnectSQL {
             }
         }
     }
-    public void testPreparedStatement(Connection connection) {
+    public String testPreparedStatement(Connection connection, String url) {
         PreparedStatement ppstmt = null;
-        String query = "select id, title , content from tb_wujinqiyong where id = ?";
+        String query = "select id, LastTime , URL from tb_whichweb where url = ?";
         try {
             ppstmt = connection.prepareStatement(query);
-            ppstmt.setInt(1,1);
+            ppstmt.setString(1,url);
             ResultSet rs = ppstmt.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("id");
-                String title = rs.getString("title");
-                String content = rs.getString("content");
-                System.out.println(id + "\t" + title);
-            }
+                String url1 = rs.getString("URL");
+                String dates = rs.getString("LastTime");
+                System.out.println(id + "\t" + url1 + dates);
+                return dates;
+            }return null;
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         } finally {
             if (ppstmt != null) {
                 try {
@@ -82,6 +84,25 @@ public class ConnectSQL {
             ppstmt = connection.prepareStatement(insertSql);
             ppstmt.setString(1, titile);
             ppstmt.setString(2, content);
+            ppstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (ppstmt != null) {
+                try {
+                    ppstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }public void add2(Connection connection,String date,String url) {
+        PreparedStatement ppstmt = null;
+        String insertSql = "insert into tb_whichweb(LastTime, URL) values(?, ?);";
+        try {
+            ppstmt = connection.prepareStatement(insertSql);
+            ppstmt.setString(1, date);
+            ppstmt.setString(2, url);
             ppstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -119,12 +140,13 @@ public class ConnectSQL {
             }
         }
     }
-    public void update(Connection connection) {
+    public void update(Connection connection,Date date,String url) {
         PreparedStatement ppstmt = null;
-        String updateSql = "update user set balance = balance + 5 where name = ?";
+        String updateSql = "update tb_whichweb set LastTime = ? where URL = ?";
         try {
             ppstmt = connection.prepareStatement(updateSql);
-            ppstmt.setString(1, "alex");
+            ppstmt.setDate(1, date);
+            ppstmt.setString(1, url);
             ppstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

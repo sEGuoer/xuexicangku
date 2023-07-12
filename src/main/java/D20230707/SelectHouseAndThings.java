@@ -30,6 +30,7 @@ public class SelectHouseAndThings {
         ConnectSQL jdbcTest = new ConnectSQL();
         Connection connection = jdbcTest.getConnection();
         Document doc = Jsoup.connect("http://bbs.xmfish.com/thread-htm-fid-55-page-1.html").get();
+
         //拿到需要过滤掉的内容
 //        System.out.println(i);
 //            #threadlist tr[class="tr3"] td[class="subject"] a 另一种方法
