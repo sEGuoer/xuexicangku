@@ -1,5 +1,6 @@
 package D20230707;
 
+import D20230711.ConnectSQL;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
@@ -12,6 +13,8 @@ import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -19,12 +22,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SelectHouseAndThings {
-    public static void main(String[] args) throws IOException, MessagingException {
+    public static void main(String[] args) throws IOException, MessagingException, SQLException {
         int page = 1;
         int i = 0;
         String a = null;
 
-
+        ConnectSQL jdbcTest = new ConnectSQL();
+        Connection connection = jdbcTest.getConnection();
         Document doc = Jsoup.connect("http://bbs.xmfish.com/thread-htm-fid-55-page-1.html").get();
         //拿到需要过滤掉的内容
 //        System.out.println(i);
@@ -81,9 +85,12 @@ public class SelectHouseAndThings {
                                 sb.append(data[0] + " ");
                                 sb.append(data[1]);
                                 System.out.println(sb.toString());//得到想要的信息
+                                String sbToString = sb.toString();
+                                String URL = "http://bbs.xmfish.com/" + e.select("td[class = subject] a[class=\"subject_t f14\"]").attr("href");
                                 Matcher m = p.matcher(sb.toString());
+                                jdbcTest.add(connection,sbToString,URL);
                                 while (m.find()) {
-                                    sentEmail.add(sb.toString() + "<br>" + "http://bbs.xmfish.com/" + e.select("td[class = subject] a[class=\"subject_t f14\"]").attr("href") + "<br>");
+                                    sentEmail.add(sbToString + "<br>" + URL + "<br>");
                                 }
                             } else if (e.html().equals(a)) {
                                 i++;
@@ -114,10 +121,13 @@ public class SelectHouseAndThings {
                         StringBuilder sb = new StringBuilder();
                         sb.append(data[0] + " ");
                         sb.append(data[1]);
-                        System.out.println(sb.toString());
+                        System.out.println(sb.toString());//得到想要的信息
+                        String sbToString = sb.toString();
+                        String URL = "http://bbs.xmfish.com/" + e.select("td[class = subject] a[class=\"subject_t f14\"]").attr("href");
                         Matcher m = p.matcher(sb.toString());
+                        jdbcTest.add(connection,sbToString,URL);
                         while (m.find()) {
-                            sentEmail.add(sb.toString() + "<br>" + "http://bbs.xmfish.com/" + e.select("td[class = subject] a[class=\"subject_t f14\"]").attr("href") + "<br>");
+                            sentEmail.add(sbToString + "<br>" + URL + "<br>");
                         }
                     } else if (e.html().equals(a)) {
                         i++;

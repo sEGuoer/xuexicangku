@@ -98,3 +98,7 @@ delete from tb_emp where id = 1;
 
 -- 2. 删除 tb_emp 表中的所有员工
 delete from tb_emp;
+
+show databases;
+DESCRIBE table tb_wujinqiyong;
+DELETE from tb_wujinqiyong;

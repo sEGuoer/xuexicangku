@@ -13,7 +13,7 @@ public class ConnectSQL {
         ConnectSQL jdbcTest = new ConnectSQL();
         Connection connection = jdbcTest.getConnection();
         jdbcTest.testStatement(connection);
-//        jdbcTest.testPreparedStatement(connection);
+        jdbcTest.testPreparedStatement(connection);
 //        jdbcTest.testTransactions(connection);
 //        jdbcTest.add(connection);
 //        jdbcTest.batchAdd(connection);
@@ -22,21 +22,21 @@ public class ConnectSQL {
     }
     public Connection getConnection() throws SQLException {
         Connection conn = null;
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc", "root", System.getenv("db_password"));
+        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/db3?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false", "root", null);
         System.out.println("Connected to database");
         return conn;
     }
     public void testStatement(Connection connection) {
         Statement stmt = null;
-        String query = "select id, name, balance from user";
+        String query = "select id , title , content from tb_wujinqiyong";
         try {
             stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 int id = rs.getInt("id");
-                String name = rs.getString("name");
-                int balance = rs.getInt("balance");
-                System.out.println(id + "\t" + name);
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                System.out.println(id + "\t" + title);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,16 +52,16 @@ public class ConnectSQL {
     }
     public void testPreparedStatement(Connection connection) {
         PreparedStatement ppstmt = null;
-        String query = "select id, name, balance from user where id = ?";
+        String query = "select id, title , content from tb_wujinqiyong where id = ?";
         try {
             ppstmt = connection.prepareStatement(query);
-            ppstmt.setInt(1, 1);
+            ppstmt.setInt(1,1);
             ResultSet rs = ppstmt.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("id");
-                String name = rs.getString("name");
-                int balance = rs.getInt("balance");
-                System.out.println(id + "\t" + name);
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                System.out.println(id + "\t" + title);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,13 +75,13 @@ public class ConnectSQL {
             }
         }
     }
-    public void add(Connection connection) {
+    public void add(Connection connection,String titile,String content) {
         PreparedStatement ppstmt = null;
-        String insertSql = "insert into user(name, balance) values(?, ?);";
+        String insertSql = "insert into tb_wujinqiyong(title, content) values(?, ?);";
         try {
             ppstmt = connection.prepareStatement(insertSql);
-            ppstmt.setString(1, "alex");
-            ppstmt.setInt(2, 50);
+            ppstmt.setString(1, titile);
+            ppstmt.setString(2, content);
             ppstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
