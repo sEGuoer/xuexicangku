@@ -12,6 +12,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import spider.SpiderUse;
 import spider.method.SentEmail;
+import spider.method.WhichWeb;
 import spider.method.manyUser;
 
 import java.io.IOException;
@@ -30,8 +31,8 @@ public class XMfish implements SpiderUse {
         int page = 1;
         int i = 0;
         String a = null;
-
-        Document doc = Jsoup.connect("http://bbs.xmfish.com/thread-htm-fid-55-page-1.html").get();
+        String b = new WhichWeb().getWeb(0);//拿到对应的网址
+        Document doc = Jsoup.connect(b+"-page-1.html").get();
 
         //拿到需要过滤掉的内容
 //        System.out.println(i);

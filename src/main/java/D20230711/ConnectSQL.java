@@ -1,5 +1,8 @@
 package D20230711;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 /*
     CREATE TABLE `user` (
       `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -26,16 +29,18 @@ public class ConnectSQL {
         System.out.println("Connected to database");
         return conn;
     }
-    public void testStatement(Connection connection) {
+    public List<String> testStatement(Connection connection) {
         Statement stmt = null;
-        String query = "select id , title , content from tb_wujinqiyong";
+        String query = "select id, LastTime , URL from tb_whichweb";
+        List<String> url = new ArrayList<>();
         try {
             stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 int id = rs.getInt("id");
-                String title = rs.getString("title");
-                String content = rs.getString("content");
+                String LastTime = rs.getString("LastTime");
+                String URL = rs.getString("URL");
+                url.add(URL);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -47,7 +52,7 @@ public class ConnectSQL {
                     e.printStackTrace();
                 }
             }
-        }
+        }return url;
     }
     public String testPreparedStatement(Connection connection, String url) {
         PreparedStatement ppstmt = null;

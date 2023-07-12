@@ -19,18 +19,22 @@ import java.util.regex.Pattern;
 
 public class manyUser {
     public static List<String> xunHuan(String firstTime,int page,int i,String a) throws SQLException, IOException, ParseException {
-        ConnectSQL jdbcTest = new ConnectSQL();
-        Connection connection = jdbcTest.getConnection();
         Pattern p = Pattern.compile("\\闲\\置\\转\\让");//筛选条件
         List<String> sentEmail = new ArrayList<>(); //发送邮件的信息
-        String LastTime = jdbcTest.testPreparedStatement(connection,"http://bbs.xmfish.com/thread-htm-fid-55-page-1.html");
+        WhichWeb whichWeb = new WhichWeb();
+        String b = whichWeb.getWeb(0);
+        System.out.println(b);
+        Connection connection = whichWeb.getconnection();
+        ConnectSQL jdbcTest = whichWeb.getJbdcTest();
+        String LastTime = jdbcTest.testPreparedStatement(connection,b);
+        System.out.println(LastTime);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = simpleDateFormat.parse(LastTime);//截至时间
         if (LastTime != null) {
-            jdbcTest.update(connection,firstTime,"http://bbs.xmfish.com/thread-htm-fid-55-page-1.html");
+            jdbcTest.update(connection,firstTime,b+"-page-1.html");
             int panduan = 0;
             for (; ; page++) {
-                Document doc1 = Jsoup.connect("http://bbs.xmfish.com/thread-htm-fid-55-page-" + page + ".html").get();
+                Document doc1 = Jsoup.connect(b+"-page-" + page + ".html").get();
                 Elements links1 = doc1.select("tr.tr3:has(a[class = f14 s4 view])");
                 if (panduan == 0) {
                     for (Element e : links1) {
@@ -69,9 +73,9 @@ public class manyUser {
             System.out.println("过滤了" + i + "条");
 
         } else {
-            jdbcTest.add2(connection, firstTime ,"http://bbs.xmfish.com/thread-htm-fid-55-page-1.html");
+            jdbcTest.add2(connection, firstTime ,b+"-page-1.html");
             for (; page < 4; page++) {
-                Document doc1 = Jsoup.connect("http://bbs.xmfish.com/thread-htm-fid-55-page-" + page + ".html").get();
+                Document doc1 = Jsoup.connect(b+"-page-" + page + ".html").get();
                 Elements links1 = doc1.select("tr.tr3:has(a[class = f14 s4 view])");
                 for (Element e : links1) {
                     if (!e.html().equals(a)) {
