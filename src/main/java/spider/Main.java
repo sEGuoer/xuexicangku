@@ -10,6 +10,8 @@ import java.text.ParseException;
 public class Main {
     public static void main(String[] args) throws MessagingException, SQLException, IOException, ParseException {
         SpiderUse XMfish = new XMfish();
-        XMfish.star();
+        XMfish.parse();
+        XMfish.getInformations();
+        XMfish.sentEamil("709074535@qq.com");
     }
 }

@@ -1,6 +1,7 @@
 package spider.method;
 
 import D20230711.ConnectSQL;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
@@ -12,9 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class WhichWebTest {
     @Test
     void name() throws SQLException {
-        ConnectSQL jdbcTest = new ConnectSQL();
-        Connection connection = jdbcTest.getConnection();
-        List<String> strings = jdbcTest.testStatement(connection);
-        System.out.println(strings.get(0));
+        WhichWeb whichWeb1 = WhichWeb.getInstance();
+        WhichWeb whichWeb2 = WhichWeb.getInstance();
+        Assertions.assertEquals(whichWeb2,whichWeb1);
     }
 }

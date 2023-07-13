@@ -17,24 +17,60 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class manyUser {
-    public static List<String> xunHuan(String firstTime,int page,int i,String a) throws SQLException, IOException, ParseException {
+public class ManyUser {
+    private ManyUser() {
+    }
+    private static volatile ManyUser manyUser;
+
+
+    public static ManyUser getManyUser() {
+        if (manyUser == null){
+            synchronized (ManyUser.class){
+                if (manyUser == null){
+                    manyUser = new ManyUser();
+                }
+            }
+        }
+        return manyUser;
+    }
+
+    private String b;
+    List<String> sentEmail;
+
+    public String getB() {
+        return b;
+    }
+
+    public void setB(String b) {
+        this.b = b;
+    }
+
+    public List<String> getSentEmail() {
+        return sentEmail;
+    }
+
+    public void setSentEmail(List<String> sentEmail) {
+        this.sentEmail = sentEmail;
+    }
+
+    public static List<String> xunHuan(String firstTime, int page, int i, String a) throws SQLException, IOException, ParseException {
         Pattern p = Pattern.compile("\\闲\\置\\转\\让");//筛选条件
-        List<String> sentEmail = new ArrayList<>(); //发送邮件的信息
-        WhichWeb whichWeb = new WhichWeb();
-        String b = whichWeb.getWeb(0);
-        System.out.println(b);
-        Connection connection = whichWeb.getconnection();
-        ConnectSQL jdbcTest = whichWeb.getJbdcTest();
-        String LastTime = jdbcTest.testPreparedStatement(connection,b);
+        WhichWeb whichWeb =WhichWeb.getInstance();
+        ManyUser manyUser =getManyUser();
+        manyUser.setB(whichWeb.getWeb(0));
+        System.out.println(manyUser);
+        System.out.println(manyUser.getB());
+        List<String> medium = new ArrayList<>();
+        System.out.println(firstTime);
+        String LastTime = whichWeb.getJbdcTest().testPreparedStatement(whichWeb.getconnection(), manyUser.getB());
         System.out.println(LastTime);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = simpleDateFormat.parse(LastTime);//截至时间
         if (LastTime != null) {
-            jdbcTest.update(connection,firstTime,b+"-page-1.html");
+            whichWeb.getJbdcTest().update(whichWeb.getconnection(),firstTime,manyUser.getB());
             int panduan = 0;
             for (; ; page++) {
-                Document doc1 = Jsoup.connect(b+"-page-" + page + ".html").get();
+                Document doc1 = Jsoup.connect(manyUser.getB()+"-page-" + page + ".html").get();
                 Elements links1 = doc1.select("tr.tr3:has(a[class = f14 s4 view])");
                 if (panduan == 0) {
                     for (Element e : links1) {
@@ -57,25 +93,25 @@ public class manyUser {
                                 String sbToString = sb.toString();
                                 String URL = "http://bbs.xmfish.com/" + e.select("td[class = subject] a[class=\"subject_t f14\"]").attr("href");
                                 Matcher m = p.matcher(sb.toString());
-                                jdbcTest.add(connection,sbToString,URL);
+                                whichWeb.getJbdcTest().add(whichWeb.getconnection(),sbToString,URL);
                                 while (m.find()) {
-                                    sentEmail.add(sbToString + "<br>" + URL + "<br>");
+                                    medium.add(sbToString + "<br>" + URL + "<br>");
                                 }
                             } else if (e.html().equals(a)) {
                                 i++;
                             }
                         }
                     }
-                } else if (panduan == 1) {
+                } else  {
                     break;
                 }
             }
             System.out.println("过滤了" + i + "条");
 
         } else {
-            jdbcTest.add2(connection, firstTime ,b+"-page-1.html");
+            whichWeb.getJbdcTest().add2(whichWeb.getconnection(), firstTime ,manyUser.getB());
             for (; page < 4; page++) {
-                Document doc1 = Jsoup.connect(b+"-page-" + page + ".html").get();
+                Document doc1 = Jsoup.connect(manyUser.getB()+"-page-" + page + ".html").get();
                 Elements links1 = doc1.select("tr.tr3:has(a[class = f14 s4 view])");
                 for (Element e : links1) {
                     if (!e.html().equals(a)) {
@@ -88,9 +124,9 @@ public class manyUser {
                         String sbToString = sb.toString();
                         String URL = "http://bbs.xmfish.com/" + e.select("td[class = subject] a[class=\"subject_t f14\"]").attr("href");
                         Matcher m = p.matcher(sb.toString());
-                        jdbcTest.add(connection,sbToString,URL);
+                        whichWeb.getJbdcTest().add(whichWeb.getconnection(),sbToString,URL);
                         while (m.find()) {
-                            sentEmail.add(sbToString + "<br>" + URL + "<br>");
+                            medium.add(sbToString + "<br>" + URL + "<br>");
                         }
                     } else if (e.html().equals(a)) {
                         i++;
@@ -99,6 +135,8 @@ public class manyUser {
                 //拿到想要的信息
             }
             System.out.println("过滤了" + i + "条");
-        }return sentEmail;
+        }
+        manyUser.setSentEmail(medium);
+        return manyUser.getSentEmail();
     }
 }

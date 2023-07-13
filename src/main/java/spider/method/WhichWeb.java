@@ -7,23 +7,38 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class WhichWeb {
+    private  static  WhichWeb WITCH_WEB;
     private Connection connection;
     private ConnectSQL jbdcTest;
+
+    private WhichWeb() {
+    }
+
+    public static WhichWeb getInstance() throws SQLException {
+        if (WITCH_WEB == null){
+            synchronized (WhichWeb.class){
+                if (WITCH_WEB == null){
+                    WITCH_WEB = new WhichWeb();
+                    ConnectSQL jdbcTest = new ConnectSQL();
+                    Connection connection = jdbcTest.getConnection();
+                    WITCH_WEB.setConnection(connection);
+                    WITCH_WEB.setJbdcTest(jdbcTest);
+                }
+            }
+        }
+        return WITCH_WEB;
+    }
     public String getWeb(int i) throws SQLException {
-        ConnectSQL jdbcTest = new ConnectSQL();
-        Connection connection = jdbcTest.getConnection();
-        setConnection(connection);
-        setJbdcTest(jdbcTest);
-        List<String> strings = jdbcTest.testStatement(connection);
+        List<String> strings = WITCH_WEB.getJbdcTest().testStatement(getconnection());
         return strings.get(i);
     }
 
     public void setConnection(Connection connection) {
-        this.connection = connection;
+        WITCH_WEB.connection = connection;
     }
 
     public void setJbdcTest(ConnectSQL jbdcTest) {
-        this.jbdcTest = jbdcTest;
+        WITCH_WEB.jbdcTest = jbdcTest;
     }
 
     public Connection getconnection(){

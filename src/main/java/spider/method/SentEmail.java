@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Properties;
 
 public class SentEmail {
-    public  void sentEmail (List<String> sentEmail) throws MessagingException {
+    public  void sentEmail (List<String> sentEmail,String string) throws MessagingException {
         String emailMessage = sentEmail.toString();
         if (sentEmail.isEmpty()) {
         } else {
@@ -31,7 +31,7 @@ public class SentEmail {
             // who you are
             message.setFrom(new InternetAddress(System.getenv("qqmail")));
             // send to ...
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("709074535@qq.com"));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(string));
 
             message.setSubject("Mail Subject");
 
