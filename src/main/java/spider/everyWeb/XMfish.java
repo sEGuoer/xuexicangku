@@ -64,11 +64,11 @@ public class XMfish implements SpiderUse {
     }
 
     @Override
-    public void parse() throws SQLException, IOException {
-
-        setB(WhichWeb.getInstance().getWeb(0));//拿到对应的网址
+    public String parse(int i) throws SQLException, IOException {
+        String b = WhichWeb.getInstance().getWeb(0);
+        setB(b);//拿到对应的网址
         setDoc(Jsoup.connect(getB() + "-page-1.html").get());
-
+        return b;
         //拿到需要过滤掉的内容
     }
 
@@ -114,4 +114,36 @@ public class XMfish implements SpiderUse {
         SentEmail sentEmail1 = new SentEmail();
         sentEmail1.sentEmail(getSentEmail(), string);
     }
+
+    @Override
+    public String loadContentAndResponseToDatabase(String string) throws SQLException, IOException {
+        WhichWeb whichWeb = WhichWeb.getInstance();
+        String URL = whichWeb.getJbdcTest().test(whichWeb.getconnection(), string);
+//        System.out.println(URL);
+        int id = whichWeb.getJbdcTest().test(whichWeb.getconnection(), string,1);
+//        System.out.println(id);
+        XMfish xMfish = new XMfish();
+        xMfish.setDoc(Jsoup.connect(URL).get());
+        Elements link = xMfish.getDoc().select("td.floot_bottom div.tpc_content");
+        Element element = xMfish.getDoc().selectFirst("td.floot_bottom div.tpc_content");
+        String content = element.text();
+        for (Element e : link) {
+            String str = e.text();
+            if (str.equals(content)) {
+            }else {
+                whichWeb.getJbdcTest().add(whichWeb.getconnection(),id,content,str);
+                /*System.out.println(str);*/
+            }
+        }
+        return content;
+    }
+
+    @Override
+    public void getResponse(String string) throws SQLException {
+        WhichWeb whichWeb = WhichWeb.getInstance();
+        List<String> response = whichWeb.getJbdcTest().loadresponse(whichWeb.getconnection(), string);
+        System.out.println(response.toString());
+    }
 }
+
+

@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.text.ParseException;
 
 public interface SpiderUse {
-    public void parse() throws SQLException, IOException;
+    public String parse(int i) throws SQLException, IOException;
     public void getInformations() throws SQLException, IOException, ParseException;
     public void sentEamil(String string) throws SQLException, IOException, ParseException, MessagingException;
+    public String loadContentAndResponseToDatabase(String string) throws SQLException, IOException;
+    public void getResponse(String string) throws SQLException;
 }

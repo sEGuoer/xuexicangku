@@ -175,3 +175,8 @@ values (1, 1),
        (2, 2),
        (2, 3),
        (3, 4);
+
+use db3;
+alter table tb_contentandresponse
+    add constraint tb_contentandresponse_tb_wujinqiyong__fk
+        foreign key (`wujinqiyong_id`) references tb_wujinqiyong (`id`);
