@@ -13,6 +13,7 @@ import spider.method.ManyUser;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.List;
 
 public class XMfish implements SpiderUse {
@@ -65,7 +66,7 @@ public class XMfish implements SpiderUse {
 
     @Override
     public String parse(int i) throws SQLException, IOException {
-        String b = WhichWeb.getInstance().getWeb(0);
+        String b = WhichWeb.getInstance().getWeb(i);
         setB(b);//拿到对应的网址
         setDoc(Jsoup.connect(getB() + "-page-1.html").get());
         return b;
@@ -119,23 +120,59 @@ public class XMfish implements SpiderUse {
     public String loadContentAndResponseToDatabase(String string) throws SQLException, IOException {
         WhichWeb whichWeb = WhichWeb.getInstance();
         String URL = whichWeb.getJbdcTest().test(whichWeb.getconnection(), string);
-//        System.out.println(URL);
-        int id = whichWeb.getJbdcTest().test(whichWeb.getconnection(), string,1);
+        String[] data = URL.split(".html");
+        StringBuilder sb = new StringBuilder();
+        sb.append(data[0]);
+        String a = sb.toString();
+        System.out.println(a);
+        int id = whichWeb.getJbdcTest().test(whichWeb.getconnection(), string, 1);
 //        System.out.println(id);
         XMfish xMfish = new XMfish();
         xMfish.setDoc(Jsoup.connect(URL).get());
+        Element link2 = xMfish.getDoc().selectFirst("div[class = cc mb10]");
+        String s = link2.text();
+        System.out.println(s);
+        String[] strings = s.split("[\\共\\页]");
         Elements link = xMfish.getDoc().select("td.floot_bottom div.tpc_content");
         Element element = xMfish.getDoc().selectFirst("td.floot_bottom div.tpc_content");
         String content = element.text();
-        for (Element e : link) {
-            String str = e.text();
-            if (str.equals(content)) {
-            }else {
-                whichWeb.getJbdcTest().add(whichWeb.getconnection(),id,content,str);
-                /*System.out.println(str);*/
+        if (strings.length == 1) {
+            System.out.println(Arrays.toString(strings));
+            for (Element e : link) {
+                String str = e.text();
+                if (str.equals(content)) {
+                } else {
+                    whichWeb.getJbdcTest().add(whichWeb.getconnection(), id, content, str);
+                    /*System.out.println(str);*/
+                }
             }
+            List<String> response = whichWeb.getJbdcTest().loadresponse(whichWeb.getconnection(), content);
+            if (response.isEmpty()) {
+                whichWeb.getJbdcTest().add(whichWeb.getconnection(), id, content, null);
+            }
+            return content;
+        } else {
+            StringBuilder sb2 = new StringBuilder();
+            sb2.append(data[1]);
+            System.out.println(sb2.toString());
+            int page = Integer.parseInt(sb2.toString());
+            for (int i1 = 1; i1 <=page ; i1++) {
+                xMfish.setDoc(Jsoup.connect(a + "-page-" + i1 + ".html").get());
+                System.out.println(Arrays.toString(strings));
+                for (Element e : link) {
+                    String str = e.text();
+                    if (str.equals(content)) {
+                    } else {
+                        whichWeb.getJbdcTest().add(whichWeb.getconnection(), id, content, str);
+                        /*System.out.println(str);*/
+                    }
+                }
+                List<String> response = whichWeb.getJbdcTest().loadresponse(whichWeb.getconnection(), content);
+                if (response.isEmpty()) {
+                    whichWeb.getJbdcTest().add(whichWeb.getconnection(), id, content, null);
+                }
+            }return content;
         }
-        return content;
     }
 
     @Override

@@ -85,9 +85,10 @@ public class ManyUser {
 
                             if (!e.html().equals(a)) {
                                 String str = e.text();
+                                System.out.println(str);
                                 String[] data = str.split(" ");
                                 StringBuilder sb = new StringBuilder();
-                                sb.append(data[0]).append(" ");
+                                sb.append(data[0]);
                                 sb.append(data[1]);
                                 System.out.println(sb.toString());//得到想要的信息
                                 String sbToString = sb.toString();
