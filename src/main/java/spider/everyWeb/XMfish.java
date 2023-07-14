@@ -133,10 +133,10 @@ public class XMfish implements SpiderUse {
         String s = link2.text();
         System.out.println(s);
         String[] strings = s.split("[\\共\\页]");
-        Elements link = xMfish.getDoc().select("td.floot_bottom div.tpc_content");
         Element element = xMfish.getDoc().selectFirst("td.floot_bottom div.tpc_content");
         String content = element.text();
         if (strings.length == 1) {
+            Elements link = xMfish.getDoc().select("td.floot_bottom div.tpc_content");
             System.out.println(Arrays.toString(strings));
             for (Element e : link) {
                 String str = e.text();
@@ -158,6 +158,7 @@ public class XMfish implements SpiderUse {
             int page = Integer.parseInt(sb2.toString());
             for (int i1 = 1; i1 <=page ; i1++) {
                 xMfish.setDoc(Jsoup.connect(a + "-page-" + i1 + ".html").get());
+                Elements link = xMfish.getDoc().select("td.floot_bottom div.tpc_content");
                 System.out.println(Arrays.toString(strings));
                 for (Element e : link) {
                     String str = e.text();
