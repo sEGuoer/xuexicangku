@@ -1,13 +1,11 @@
 package spider.method;
 
-import D20230711.ConnectSQL;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,15 +32,15 @@ public class ManyUser {
         return manyUser;
     }
 
-    private String b;
+    private String demandWeb;
     List<String> sentEmail;
 
-    public String getB() {
-        return b;
+    public String getDemandWeb() {
+        return demandWeb;
     }
 
-    public void setB(String b) {
-        this.b = b;
+    public void setDemandWeb(String demandWeb) {
+        this.demandWeb = demandWeb;
     }
 
     public List<String> getSentEmail() {
@@ -53,24 +51,24 @@ public class ManyUser {
         this.sentEmail = sentEmail;
     }
 
-    public static List<String> xunHuan(String firstTime, int page, int i, String a) throws SQLException, IOException, ParseException {
+    public static List<String> getInformationsToSent(String firstTime, int page, int i, String uselessURL) throws SQLException, IOException, ParseException {
         Pattern p = Pattern.compile("\\闲\\置\\转\\让");//筛选条件
         WhichWeb whichWeb =WhichWeb.getInstance();
         ManyUser manyUser =getManyUser();
-        manyUser.setB(whichWeb.getWeb(0));
+        manyUser.setDemandWeb(whichWeb.getWeb(0));
         System.out.println(manyUser);
-        System.out.println(manyUser.getB());
+        System.out.println(manyUser.getDemandWeb());
         List<String> medium = new ArrayList<>();
         System.out.println(firstTime);
-        String LastTime = whichWeb.getJbdcTest().testPreparedStatement(whichWeb.getconnection(), manyUser.getB());
+        String LastTime = whichWeb.getJbdcTest().testPreparedStatement(whichWeb.getconnection(), manyUser.getDemandWeb());
         System.out.println(LastTime);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = simpleDateFormat.parse(LastTime);//截至时间
         if (LastTime != null) {
-            whichWeb.getJbdcTest().update(whichWeb.getconnection(),firstTime,manyUser.getB());
+            whichWeb.getJbdcTest().update(whichWeb.getconnection(),firstTime,manyUser.getDemandWeb());
             int panduan = 0;
             for (; ; page++) {
-                Document doc1 = Jsoup.connect(manyUser.getB()+"-page-" + page + ".html").get();
+                Document doc1 = Jsoup.connect(manyUser.getDemandWeb()+"-page-" + page + ".html").get();
                 Elements links1 = doc1.select("tr.tr3:has(a[class = f14 s4 view])");
                 if (panduan == 0) {
                     for (Element e : links1) {
@@ -83,7 +81,7 @@ public class ManyUser {
                            /* System.out.println(e.select("td[class = author]:has(a[title]) p a").attr("title"));
                             System.out.println(s);*/
 
-                            if (!e.html().equals(a)) {
+                            if (!e.html().equals(uselessURL)) {
                                 String str = e.text();
                                 System.out.println(str);
                                 String[] data = str.split(" ");
@@ -98,7 +96,7 @@ public class ManyUser {
                                 while (m.find()) {
                                     medium.add(sbToString + "<br>" + URL + "<br>");
                                 }
-                            } else if (e.html().equals(a)) {
+                            } else if (e.html().equals(uselessURL)) {
                                 i++;
                             }
                         }
@@ -110,12 +108,12 @@ public class ManyUser {
             System.out.println("过滤了" + i + "条");
 
         } else {
-            whichWeb.getJbdcTest().add2(whichWeb.getconnection(), firstTime ,manyUser.getB());
+            whichWeb.getJbdcTest().add2(whichWeb.getconnection(), firstTime ,manyUser.getDemandWeb());
             for (; page < 4; page++) {
-                Document doc1 = Jsoup.connect(manyUser.getB()+"-page-" + page + ".html").get();
+                Document doc1 = Jsoup.connect(manyUser.getDemandWeb()+"-page-" + page + ".html").get();
                 Elements links1 = doc1.select("tr.tr3:has(a[class = f14 s4 view])");
                 for (Element e : links1) {
-                    if (!e.html().equals(a)) {
+                    if (!e.html().equals(uselessURL)) {
                         String str = e.text();
                         String[] data = str.split(" ");
                         StringBuilder sb = new StringBuilder();
@@ -129,7 +127,7 @@ public class ManyUser {
                         while (m.find()) {
                             medium.add(sbToString + "<br>" + URL + "<br>");
                         }
-                    } else if (e.html().equals(a)) {
+                    } else if (e.html().equals(uselessURL)) {
                         i++;
                     }
                 }

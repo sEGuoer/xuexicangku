@@ -17,17 +17,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class XMfish implements SpiderUse {
-    private int i = 0;
+    private int surfaceparameters = 0;
     private int page = 1;
-    private String a;
-    private String b;
+    private String uselessURL;
+    private String demandWeb;
 
-    public int getI() {
-        return i;
+    public int getSurfaceparameters() {
+        return surfaceparameters;
     }
 
-    public void setI(int i) {
-        this.i = i;
+    public void setSurfaceparameters(int surfaceparameters) {
+        this.surfaceparameters = surfaceparameters;
     }
 
     public int getPage() {
@@ -38,20 +38,20 @@ public class XMfish implements SpiderUse {
         this.page = page;
     }
 
-    public String getA() {
-        return a;
+    public String getUselessURL() {
+        return uselessURL;
     }
 
-    public void setA(String a) {
-        this.a = a;
+    public void setUselessURL(String a) {
+        this.uselessURL = a;
     }
 
-    public String getB() {
-        return b;
+    public String getDemandWeb() {
+        return demandWeb;
     }
 
-    public void setB(String b) {
-        this.b = b;
+    public void setDemandWeb(String demandWeb) {
+        this.demandWeb = demandWeb;
     }
 
     private Document doc;
@@ -65,11 +65,11 @@ public class XMfish implements SpiderUse {
     }
 
     @Override
-    public String parse(int i) throws SQLException, IOException {
-        String b = WhichWeb.getInstance().getWeb(i);
-        setB(b);//拿到对应的网址
-        setDoc(Jsoup.connect(getB() + "-page-1.html").get());
-        return b;
+    public String parse(int whichWeb) throws SQLException, IOException {
+        String demandWeb = WhichWeb.getInstance().getWeb(whichWeb);
+        setDemandWeb(demandWeb);//拿到对应的网址
+        setDoc(Jsoup.connect(getDemandWeb() + "-page-1.html").get());
+        return demandWeb;
         //拿到需要过滤掉的内容
     }
 
@@ -99,7 +99,7 @@ public class XMfish implements SpiderUse {
         Elements link = getDoc().select("tr.tr3 td.subject:has(i[class = windthread_new]) ");
         for (Element e : link) {
             /*System.out.println(e.html());*/
-            setA(e.html());
+            setUselessURL(e.html());
         }
         Elements links2 = getDoc().select("tr.tr3:has(a[class = f14 s4 view]) td[class = author]:has(a[title]) p a");
         for (Element e : links2) {
@@ -107,25 +107,25 @@ public class XMfish implements SpiderUse {
             setFirstTime(e.attr("title") + ":00");
             break;
         }
-        setSentEmail(ManyUser.xunHuan(getFirstTime(), getPage(), getI(), getA()));
+        setSentEmail(ManyUser.getInformationsToSent(getFirstTime(), getPage(), getSurfaceparameters(), getUselessURL()));
     }
 
     @Override
-    public void sentEamil(String string) throws MessagingException {
+    public void sentEamil(String toWho) throws MessagingException {
         SentEmail sentEmail1 = new SentEmail();
-        sentEmail1.sentEmail(getSentEmail(), string);
+        sentEmail1.sentEmail(getSentEmail(), toWho);
     }
 
     @Override
-    public String loadContentAndResponseToDatabase(String string) throws SQLException, IOException {
+    public String loadContentAndResponseToDatabaseByTitle(String title) throws SQLException, IOException {
         WhichWeb whichWeb = WhichWeb.getInstance();
-        String URL = whichWeb.getJbdcTest().test(whichWeb.getconnection(), string);
+        String URL = whichWeb.getJbdcTest().test(whichWeb.getconnection(), title);
         String[] data = URL.split(".html");
         StringBuilder sb = new StringBuilder();
         sb.append(data[0]);
         String a = sb.toString();
         System.out.println(a);
-        int id = whichWeb.getJbdcTest().test(whichWeb.getconnection(), string, 1);
+        int id = whichWeb.getJbdcTest().test(whichWeb.getconnection(), title, 1);
 //        System.out.println(id);
         XMfish xMfish = new XMfish();
         xMfish.setDoc(Jsoup.connect(URL).get());
@@ -161,15 +161,15 @@ public class XMfish implements SpiderUse {
                 Elements link = xMfish.getDoc().select("td.floot_bottom div.tpc_content");
                 System.out.println(Arrays.toString(strings));
                 for (Element e : link) {
-                    String str = e.text();
-                    if (str.equals(content)) {
+                    String eachResponse = e.text();
+                    if (eachResponse.equals(content)) {
                     } else {
-                        whichWeb.getJbdcTest().add(whichWeb.getconnection(), id, content, str);
+                        whichWeb.getJbdcTest().add(whichWeb.getconnection(), id, content, eachResponse);
                         /*System.out.println(str);*/
                     }
                 }
-                List<String> response = whichWeb.getJbdcTest().loadresponse(whichWeb.getconnection(), content);
-                if (response.isEmpty()) {
+                List<String> responses = whichWeb.getJbdcTest().loadresponse(whichWeb.getconnection(), content);
+                if (responses.isEmpty()) {
                     whichWeb.getJbdcTest().add(whichWeb.getconnection(), id, content, null);
                 }
             }return content;
@@ -177,9 +177,9 @@ public class XMfish implements SpiderUse {
     }
 
     @Override
-    public void getResponse(String string) throws SQLException {
+    public void getResponseByContent(String content) throws SQLException {
         WhichWeb whichWeb = WhichWeb.getInstance();
-        List<String> response = whichWeb.getJbdcTest().loadresponse(whichWeb.getconnection(), string);
+        List<String> response = whichWeb.getJbdcTest().loadresponse(whichWeb.getconnection(), content);
         System.out.println(response.toString());
     }
 }
