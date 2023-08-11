@@ -48,7 +48,7 @@ class URLConnectionReaderTest {
 
     @Test
     void newMethod() throws IOException {
-        URL url = new URL("https://www.qq.com");
+        URL url = new URL("http://localhost:8080/");
         URLConnection uc = url.openConnection();
         uc.setConnectTimeout(1000);
         uc.setReadTimeout(1000);

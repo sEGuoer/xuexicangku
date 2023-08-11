@@ -53,11 +53,7 @@ class MyHandler extends Thread {
             String header = reader.readLine();
             if (header.isEmpty()) { // 读取到空行时, HTTP Header 读取完毕
                 break;
-            } else if (header.equals("sec-ch-ua-platform: \"Windows\"")) {
-                requestOk = true;
-                break;
             }
-            requestOk = false;
             System.out.println(header);
         }
         System.out.println(requestOk ? "Response OK" : "Response Error");

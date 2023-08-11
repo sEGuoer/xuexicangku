@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class URLReadingTest {
     @Test
     void readingDirectlyFromAURL() throws IOException {
-        URL url = new URL("https://docs.oracle.com/javase/tutorial/java/concepts/index.html");
+        URL url = new URL("https://www.baidu.com");
       /*  InputStream inputStream = url.openStream();
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader io = new BufferedReader(inputStreamReader);
