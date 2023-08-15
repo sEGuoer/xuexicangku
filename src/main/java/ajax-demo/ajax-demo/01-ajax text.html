@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX Demo 1</title>
+    <style>
+        #myDiv {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>AJAX Demo 1</h2>
+    <div id="myDiv">
+        <p>当点击下方”修改内容“按钮，使用 AJAX 动态修改这里的内容</p>
+    </div>
+    <button type="button" onclick="loadDataFromServer()">修改内容</button>
+
+    <script>
+        /**
+         * AJAX = Asynchronous JavaScript And XML（异步的 JavaScript 和 XML）
+         * 
+         * 所有现代浏览器均支持 XMLHttpRequest 对象（IE5 和 IE6 使用 ActiveXObject）
+         * XMLHttpRequest 用于在后台与服务器交换数据。这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新
+         * 
+         * 想象一个场景：weibo、page N、up
+         * 
+         * telnet
+         * 
+         */ 
+
+        function loadDataFromServer() {
+            var xhr;
+            if (window.XMLHttpRequest) {
+                //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                xhr = new XMLHttpRequest();
+            }
+            else {
+                // IE6, IE5 浏览器执行代码
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            
+            /**
+             * 每当 readyState 改变时，就会触发 onreadystatechange 事件
+             * 
+             * readyState
+             *   0: 请求未初始化
+             *   1: 服务器连接已建立
+             *   2: 请求已接收
+             *   3: 请求处理中
+             *   4: 请求已完成，且响应已就绪
+             * 
+             * status
+             *   200: "OK"
+             *   404: 未找到页面
+             * 
+             */ 
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+
+                    /**
+                     * 如需获得来自服务器的响应，请使用 XMLHttpRequest 对象的 responseText 或 responseXML 属性
+                     *   responseText	获得字符串形式的响应数据
+                     *   responseXML	获得 XML 形式的响应数据
+                     */ 
+                    document.getElementById("myDiv").innerHTML = xhr.responseText;
+                }
+            }
+
+            /**
+             * open(method, url, async)
+             * 规定请求的类型、URL 以及是否异步处理请求
+             *   method：请求的类型；GET 或 POST
+             *   url：文件在服务器上的位置
+             *   async：true（异步）或 false（同步）
+             */ 
+            xhr.open("GET", "./data/ajax_text.txt", true);
+
+            /**
+             * send 将请求发送到服务器
+             */
+            xhr.send();
+        }
+    </script>
+</body>
+
+</html>

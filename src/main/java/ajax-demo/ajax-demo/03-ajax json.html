@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX Demo 3</title>
+</head>
+
+<body>
+    <h2>AJAX Demo 3 - JSON</h2>
+    <button type="button" onclick="loadJSON()">请求 JSON 数据</button>
+    <div id="myDiv"></div>
+
+    <script>
+        function loadJSON() {
+            var xhr;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            }
+            else {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var myArr = JSON.parse(this.responseText);
+                    doit(myArr)
+                }
+            }
+            xhr.open("GET", "./data/ajax_json.json", true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.send();
+        }
+
+        function doit(arr) {
+            var out = "<br>";
+            var i;
+            for (i = 0; i < arr.length; i++) {
+                out += '<p title="' + arr[i].title + '">' +
+                    arr[i].name + '</p>';
+            }
+            document.getElementById("myDiv").innerHTML = out;
+        }
+    </script>
+</body>
+
+</html>

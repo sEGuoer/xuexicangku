@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX Demo 4 - jQuery</title>
+</head>
+
+<body>
+    <h2>AJAX Demo 4 - jQuery - $.ajax</h2>
+    <button type="button" onclick="loadJSON()">请求 JSON 数据</button>
+    <div id="myDiv"></div>
+
+    <script src="./js/jquery.js"></script>
+    <script>
+        function loadJSON() {
+            /*
+               jquery调用ajax方法：
+                格式：$.ajax({});
+                    参数：
+                        type：请求方式GET/POST
+                        url：请求地址url
+                        async：是否异步，默认是true表示异步
+                        data：发送到服务器的数据
+                        dataType：预期服务器返回的数据类型
+                        contentType：设置请求头
+                        success：请求成功时调用此函数
+                        error：请求失败时调用此函数 
+             */ 
+            $.ajax({
+				type:"get",
+				url:"./data/ajax_json.json",
+				data:{ // 请求数据，json对象
+					// key:"value" // 如果没有参数，则不需要设置
+				},
+				dataType:"json", // 预期返回的数据类型，如果是json格式，在接收到返回值时会自动封装成json对象
+				success:function(data){ // 请求成功时调用的函数
+					for(var i = 0; i < data.length; i++) {
+						$("#myDiv").append("<p title='"+data[i].title+"'>"+data[i].name+"</p>");
+					}
+				}
+			});
+        }
+    </script>
+</body>
+
+</html>

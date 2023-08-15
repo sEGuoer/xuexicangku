@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX Demo 2</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>AJAX Demo 2 - XML</h2>
+    <button type="button" onclick="loadXml()">获取我收藏的 CD</button>
+    <br><br>
+    <table id="myTable"></table>
+
+    <script>
+        function loadXml() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    doit(this);
+                }
+            };
+            xhr.open("GET", "./data/ajax_xml.xml", true);
+            xhr.send();
+        }
+
+        function doit(xhr) {
+            var i;
+            var xmlDoc = xhr.responseXML;
+            var table = "<tr><th>Artist</th><th>Title</th></tr>";
+            var x = xmlDoc.getElementsByTagName("CD");
+            for (i = 0; i < x.length; i++) {
+                table += "<tr><td>" +
+                    x[i].getElementsByTagName("ARTIST")[0].childNodes[0].nodeValue +
+                    "</td><td>" +
+                    x[i].getElementsByTagName("TITLE")[0].childNodes[0].nodeValue +
+                    "</td></tr>";
+            }
+            document.getElementById("myTable").innerHTML = table;
+        }
+    </script>
+</body>
+
+</html>
