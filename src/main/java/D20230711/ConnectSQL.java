@@ -266,7 +266,7 @@ public class ConnectSQL {
 
     public void update(Connection connection, String date, String url) {
         PreparedStatement ppstmt = null;
-        String updateSql = "update tb_whichweb set LastTime = ? where URL = ?";
+        String updateSql = "update tb_whichweb set LastTime = ? where id = ?";
         try {
             ppstmt = connection.prepareStatement(updateSql);
             ppstmt.setString(1, date);
